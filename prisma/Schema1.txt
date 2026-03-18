@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model items {
+  id               String             @id @default(auto()) @map("_id") @db.ObjectId
+  itemTitle        String
+  itemAuthor       String
+  itemType         String
+  itemPrice        Int
+  itemImage        Bytes?
+  isbn             String             @unique
+  quantity         Int                @default(1)
+  item_transaction item_transaction[]
+}
+
+model librarian {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  librarianName  String
+  librarianEmail String @unique
+  librarianPhone Int
+  userId         String @unique @db.ObjectId
+  users          users  @relation(fields: [userId], references: [id])
+}
+
+model item_transaction {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  itemId         String    @db.ObjectId
+  itemAssignedTo String?   @db.ObjectId
+  isVisible      Boolean   @default(true)
+  isAvailable    Boolean   @default(true)
+  issueDate      DateTime?
+  dueDate        DateTime?
+  isReserved     Boolean   @default(false)
+  reservedBy     String?   @db.ObjectId
+  reservedFrom   DateTime?
+  reservedUntil  DateTime?
+  items          items?    @relation(fields: [itemId], references: [id])
+  patron         patron?   @relation(fields: [itemAssignedTo], references: [id], name: "PatronTransactions")
+  reserve        patron?   @relation(fields: [reservedBy], references: [id], name: "PatronReservations")
+
+  @@index([itemId])
+  @@index([itemAssignedTo])
+}
+
+model patron {
+  id                     String             @id @default(auto()) @map("_id") @db.ObjectId
+  patronFirstName        String
+  patronMiddleName       String
+  patronLastName         String
+  patronDepartment       String
+  patronSemester         Int
+  patronRollNo           Int
+  patronEnrollmentNumber Int                @unique
+  patronImage            Bytes?
+  userId                 String             @unique @db.ObjectId
+  item_transaction       item_transaction[] @relation("PatronTransactions")
+  // ✅ FIX: Changed the one-to-one (?) to a one-to-many ([]) to resolve the P1012 error.
+  reservations           item_transaction[] @relation("PatronReservations")
+  users                  users              @relation(fields: [userId], references: [id])
+}
+
+model user_type {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  userTypeName String
+  isLibrarian  Boolean
+  isAdmin      Boolean
+  isStudent    Boolean
+  users        users[]
+}
+
+model users {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  userName   String
+  userPass   String
+  userEmail  String     @unique
+  userTypeId String     @db.ObjectId
+  librarian  librarian?
+  patron     patron?
+  user_type  user_type  @relation(fields: [userTypeId], references: [id])
+
+  @@index([userTypeId])
+}
+

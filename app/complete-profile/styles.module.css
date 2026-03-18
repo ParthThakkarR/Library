@@ -1,0 +1,122 @@
+/* General Body and Container Styles */
+.profileBody {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 56px;
+    padding-bottom: 40px;
+}
+
+.profileContainer {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin: 20px auto;
+    max-width: 900px;
+}
+
+/* Navigation Bar */
+.navbar {
+    background: rgba(255,255,255,0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbarBrand {
+    font-weight: bold;
+    color: #667eea !important;
+}
+
+/* Profile Header */
+.profileHeader {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+}
+
+.profilePhotoContainer {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.profilePhoto {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    background-color: #e9ecef;
+}
+
+.photoUploadBtn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #28a745;
+    border: 3px solid white;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.photoUploadBtn:hover {
+    background: #218838;
+    transform: scale(1.1);
+}
+
+/* Form Section */
+.formSection {
+    padding: 40px;
+}
+
+.formLabel {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+/* Override default bootstrap focus */
+:global(.form-control:focus), :global(.form-select:focus) {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+}
+
+.required {
+    color: #dc3545;
+}
+
+/* Info Card */
+.infoCard {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-left: 5px solid #667eea;
+}
+
+/* Buttons */
+.btnPrimary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btnPrimary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}

@@ -1,0 +1,38 @@
+.dashboard {
+  padding: 1rem;
+}
+
+.statCard {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.cardCustom {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.dueBook {
+  background-color: #fff;
+}
+
+.bookCover {
+  width: 60px;
+  height: 80px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}

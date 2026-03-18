@@ -1,0 +1,354 @@
+/* body {
+  font-family: 'Inter', sans-serif;
+}
+
+.stat-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.nav-item {
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.nav-item:hover {
+  background-color: #f3f4f6;
+  border-radius: 8px;
+}
+
+.nav-item.active {
+  background-color: #3b82f6;
+  color: white !important;
+  border-radius: 8px;
+}
+
+.chart-container {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.activity-item {
+  transition: background-color 0.2s ease;
+}
+
+.activity-item:hover {
+  background-color: #f9fafb;
+} 
+ */
+
+
+
+/*CSS 2*/
+
+/* Main container */
+.dashboardContainer {
+  font-family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Sidebar styles */
+.sidebar {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.navLink {
+  color: rgba(255,255,255,0.8);
+  padding: 12px 20px;
+  margin: 2px 0;
+  border-radius: 8px;
+  transition: all 0.3s;
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+}
+
+.navLink:hover,
+.navLinkActive {
+  background-color: rgba(255,255,255,0.2);
+  color: #fff;
+  transform: translateX(5px);
+}
+
+/* Card styles */
+.statCard {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  border: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.statIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #fff;
+}
+
+/* Container styles */
+.chartContainer,
+.tableContainer {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+/* Button styles */
+.primaryBtn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  color: white;
+  transition: all 0.3s;
+}
+
+.primaryBtn:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  color: white;
+}
+
+/* Badge styles */
+.badge {
+  border-radius: 20px;
+  padding: 6px 12px;
+  display: inline-block;
+}
+
+/* Table styles */
+.tableResponsive {
+  overflow-x: auto;
+}
+
+.tableHover tbody tr:hover {
+  background-color: rgba(0,0,0,0.03);
+}
+
+/* Form styles */
+.formControl {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.formSelect {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* List group styles */
+.listGroup {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  border-radius: 0.375rem;
+}
+
+.listGroupItem {
+  position: relative;
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #212529;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.125);
+}
+
+.listGroupFlush .listGroupItem {
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+
+.listGroupFlush .listGroupItem:first-child {
+  border-top: 0;
+}
+
+/* Progress bar styles */
+.progress {
+  height: 10px;
+  background-color: #e9ecef;
+  border-radius: 0.375rem;
+}
+
+.progressBar {
+  height: 100%;
+  border-radius: 0.375rem;
+  transition: width 0.6s ease;
+}
+
+/* Responsive utilities */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.colMd6 {
+  flex: 0 0 auto;
+  width: 50%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@media (min-width: 768px) {
+  .colMd6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+
+.colLg8 {
+  flex: 0 0 auto;
+  width: 66.66666667%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@media (min-width: 992px) {
+  .colLg8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+
+.colLg4 {
+  flex: 0 0 auto;
+  width: 33.33333333%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@media (min-width: 992px) {
+  .colLg4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+}
+
+/* Text utilities */
+.textMuted {
+  color: #6c757d !important;
+}
+
+.textWhite {
+  color: #fff !important;
+}
+
+/* Flex utilities */
+.dFlex {
+  display: flex !important;
+}
+
+.alignItemsCenter {
+  align-items: center !important;
+}
+
+.justifyContentBetween {
+  justify-content: space-between !important;
+}
+
+/* Margin utilities */
+.mb0 {
+  margin-bottom: 0 !important;
+}
+
+.mb3 {
+  margin-bottom: 1rem !important;
+}
+
+.mb4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.me1 {
+  margin-right: 0.25rem !important;
+}
+
+.me2 {
+  margin-right: 0.5rem !important;
+}
+
+.me3 {
+  margin-right: 1rem !important;
+}
+
+.ms3 {
+  margin-left: 1rem !important;
+}
+
+/* Background colors for badges */
+.bgSuccess {
+  background-color: #198754 !important;
+}
+
+.bgPrimary {
+  background-color: #0d6efd !important;
+}
+
+.bgWarning {
+  background-color: #ffc107 !important;
+}
+
+.bgInfo {
+  background-color: #0dcaf0 !important;
+}
+
+.bgDanger {
+  background-color: #dc3545 !important;
+}
+
+.bgLight {
+  background-color: #f8f9fa !important;
+}

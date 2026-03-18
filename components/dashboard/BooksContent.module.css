@@ -1,0 +1,133 @@
+/* src/components/EnhancedBookManagement.module.css */
+
+/* Global styles for body and CSS variables */
+:global(body) {
+  --primary-teal: #20c997;
+  --primary-orange: #fd7e14;
+  --primary-purple: #6f42c1;
+  --primary-blue: #0d6efd;
+  --light-bg: #f8f9fa;
+  --shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  background-color: var(--light-bg);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main container */
+.mainContainer {
+  padding: 2rem;
+}
+
+/* --- Cards --- */
+.bookCard {
+  background: white;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.bookCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+.bookImage {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+.bookCardBody {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.bookTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+  height: 2.6em; /* 2 lines */
+  overflow: hidden;
+}
+.bookAuthor {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: auto; /* Pushes actions to the bottom */
+  padding-bottom: 1rem;
+}
+.bookActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+/* --- Buttons --- */
+.btnCustomTeal, .btnCustomOrange, .btnCustomPurple, .btnCustomBlue {
+  border: none;
+  color: white !important; /* Ensure high contrast */
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+.btnCustomTeal { background: linear-gradient(135deg, var(--primary-teal), #17a2b8); }
+.btnCustomOrange { background: linear-gradient(135deg, var(--primary-orange), #e55a4f); }
+.btnCustomPurple { background: linear-gradient(135deg, var(--primary-purple), #5a32a3); }
+.btnCustomBlue { background: linear-gradient(135deg, var(--primary-blue), #0056b3); }
+
+.btnCustomTeal:hover, .btnCustomOrange:hover, .btnCustomPurple:hover, .btnCustomBlue:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+/* Search and Filter Container */
+.searchContainer {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+}
+
+/* --- Table --- */
+.tableContainer {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.table thead th {
+  background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+  color: white;
+  border: none;
+}
+.table tbody tr:hover {
+  background-color: rgba(32, 201, 151, 0.05);
+}
+
+/* --- Modals --- */
+.modalContent {
+  border: none;
+  border-radius: 1rem;
+}
+.modalHeader {
+  background: linear-gradient(135deg, var(--primary-teal), var(--primary-blue));
+  color: white;
+  border-radius: 1rem 1rem 0 0;
+  border-bottom: none;
+}
+.modalTitle { font-weight: 600; }
+.btnClose { filter: invert(1) brightness(2); }
+.formLabel { font-weight: 600; color: #495057; }
+
+/* Animation */
+.fadeIn {
+  animation: fadeIn 0.5s ease-in;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
