@@ -1,0 +1,33 @@
+# LibraryHub systemd service for VPS/VM deployment
+# Copy to /etc/systemd/system/libraryhub.service
+# Run: sudo systemctl daemon-reload && sudo systemctl enable --now libraryhub
+
+[Unit]
+Description=LibraryHub Next.js Application
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=libraryhub
+Group=libraryhub
+WorkingDirectory=/opt/libraryhub
+EnvironmentFile=/opt/libraryhub/.env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+ExecStart=/usr/bin/node /opt/libraryhub/server.js
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=libraryhub
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/libraryhub
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,50 @@
+services:
+  # Production-like service (what you'd run on a VM or VPS)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: libraryhub:latest
+    container_name: libraryhub-app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+    ports:
+      - "3000:3000"
+    # Health check for orchestration (systemd, k8s, etc.)
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/auth/me"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    # Use host network for easier local DB access (comment out for true isolation)
+    # network_mode: host
+
+  # Optional: Run migrations as a one-off job
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npx prisma migrate deploy
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - app
+    profiles:
+      - tools
+
+  # Optional: Prisma Studio for DB inspection
+  studio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npx prisma studio --hostname 0.0.0.0
+    ports:
+      - "5555:5555"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    profiles:
+      - tools
