@@ -87,7 +87,8 @@
 }
 
 /* Override default bootstrap focus */
-:global(.form-control:focus), :global(.form-select:focus) {
+.formSection :global(.form-control:focus),
+.formSection :global(.form-select:focus) {
     border-color: #667eea !important;
     box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
 }

@@ -6,8 +6,9 @@ import { NextRequest, NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 // ✅ GET: Single transaction (Admin/Librarian only)
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
     if (!tokenUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -25,7 +26,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
 
     const transaction = await prisma.item_transaction.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!transaction) {
@@ -40,8 +41,9 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 // ✅ PUT: Update transaction (Admin/Librarian only)
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
     if (!tokenUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -60,7 +62,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
     const body = await req.json();
     const updated = await prisma.item_transaction.update({
-      where: { id: params.id },
+      where: { id },
       data: body,
     });
 
@@ -72,8 +74,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 // ✅ DELETE: Cancel transaction
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
     if (!tokenUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -88,7 +91,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     });
 
     const transaction = await prisma.item_transaction.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!transaction) {
@@ -103,7 +106,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ message: "Forbidden: You cannot delete this transaction" }, { status: 403 });
     }
 
-    await prisma.item_transaction.delete({ where: { id: params.id } });
+    await prisma.item_transaction.delete({ where: { id } });
 
     return NextResponse.json({ message: "Transaction deleted successfully" }, { status: 200 });
   } catch (err) {

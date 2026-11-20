@@ -49,9 +49,10 @@ const prisma = new PrismaClient();
 //   }
 // }
 
-export async function GET(req: NextRequest,{ params }: { params: { id: string } }) 
+export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) 
 {
   try {
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
 
     const user = await prisma.users.findUnique({
@@ -64,7 +65,7 @@ export async function GET(req: NextRequest,{ params }: { params: { id: string } 
     }
 
     const patron = await prisma.patron.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         users: {
           include: { user_type: true },
@@ -116,9 +117,9 @@ export async function GET(req: NextRequest,{ params }: { params: { id: string } 
 }
 
 
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
     const user = await prisma.users.findUnique({
       where: { id: tokenUser.id },
@@ -188,8 +189,9 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
 }
 
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
 
     const user = await prisma.users.findUnique({
@@ -209,7 +211,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
     const activeBorrow= await prisma.item_transaction.findFirst({
       where:{
-        itemAssignedTo: params.id,
+        itemAssignedTo: id,
         isAvailable: false
       }
     })
@@ -221,7 +223,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     }
 
     const patron = await prisma.patron.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!patron) {
@@ -229,7 +231,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     }
 
     await prisma.$transaction([
-      prisma.patron.delete({ where: { id: params.id } }),
+      prisma.patron.delete({ where: { id } }),
       prisma.users.delete({ where: { id: patron.userId } }),
     ]);
 

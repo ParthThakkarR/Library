@@ -5,9 +5,10 @@ import { NextResponse,NextRequest } from "next/server";
 
 const prisma=new PrismaClient();
 
-export async function GET(req: NextRequest, {params}: {params: {id:string}}) {
+export async function GET(req: NextRequest, context: {params: Promise<{id:string}>}) {
     try{
-        const tokenUser=getUserFromToken(req);
+        const { id } = await context.params;
+        const tokenUser=await getUserFromToken(req);
 
         const user=await prisma.users.findUnique({
             where:{ id: tokenUser.id },
@@ -21,12 +22,12 @@ export async function GET(req: NextRequest, {params}: {params: {id:string}}) {
             }
         });
 
-        if(!user || !user.user_type?.isAdmin && user.id!==params.id){
+        if(!user || !user.user_type?.isAdmin && user.id!==id){
             return NextResponse.json({message: "Forbidden"}, {status: 401});
         }
 
         const librarian = await prisma.librarian.findUnique({
-            where : {id : params.id},
+            where : {id},
             include: {
                 users: {
                     select: {
@@ -48,8 +49,9 @@ export async function GET(req: NextRequest, {params}: {params: {id:string}}) {
     }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
     const user = await prisma.users.findUnique({
       where: { id: tokenUser.id },
@@ -61,14 +63,14 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       }
     });
 
-    if (!user || (!user.user_type?.isAdmin && user.id !== params.id)) {
+    if (!user || (!user.user_type?.isAdmin && user.id !== id)) {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
     const body = await req.json();
 
     const updatedLibrarian = await prisma.librarian.update({
-      where: { id: params.id },
+      where: { id },
       data: body
     });
 
@@ -79,8 +81,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, {params}: {params: {id: string}}) {
+export async function DELETE(req: NextRequest, context: {params: Promise<{id: string}>}) {
   try {
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
     const user = await prisma.users.findUnique({
       where: { id: tokenUser.id },
@@ -96,7 +99,7 @@ export async function DELETE(req: NextRequest, {params}: {params: {id: string}})
     }
 
     await prisma.librarian.delete({
-      where: { id:params.id }
+      where: { id }
     });
 
     return NextResponse.json({ message: "Librarian deleted successfully" });

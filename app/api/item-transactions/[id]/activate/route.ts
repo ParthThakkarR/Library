@@ -82,9 +82,10 @@ const prisma = new PrismaClient();
  */
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
     if (!tokenUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -102,7 +103,7 @@ export async function PUT(
     }
 
     const reservation = await prisma.item_transaction.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!reservation || !reservation.isReserved || !reservation.reservedBy) {
@@ -127,7 +128,7 @@ export async function PUT(
     
     // If check passes, proceed to activate the reservation
     const updatedTransaction = await prisma.item_transaction.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         isReserved: false,
         reservedBy: null,

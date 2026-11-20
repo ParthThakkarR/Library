@@ -7,10 +7,11 @@ import { promises as fs} from "fs";
 
 const prisma=new PrismaClient();
 
-export async function GET(req:NextRequest, {params}: {params: {id:string}}) {
+export async function GET(req:NextRequest, context: {params: Promise<{id:string}>}) {
     try{
+        const { id } = await context.params;
         const item=await prisma.items.findUnique({
-            where: {id:params.id}
+            where: {id}
         });
 
         if(!item){
@@ -64,8 +65,9 @@ export async function GET(req:NextRequest, {params}: {params: {id:string}}) {
 // }
 
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params;
     const tokenUser = await getUserFromToken(req);
     if (!tokenUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -110,7 +112,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     }
 
     const updatedItem = await prisma.items.update({
-      where: { id: params.id },
+      where: { id },
       data,
     });
 
@@ -125,9 +127,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 
-export async function DELETE(req: NextRequest, {params}: {params: {id:string}}) {
+export async function DELETE(req: NextRequest, context: {params: Promise<{id:string}>}) {
     try{
-        const tokenUser= getUserFromToken(req);
+        const { id } = await context.params;
+        const tokenUser= await getUserFromToken(req);
 
         if(!tokenUser){
             return NextResponse.json({message: "Unauthorized"},{status: 401});
@@ -152,7 +155,7 @@ export async function DELETE(req: NextRequest, {params}: {params: {id:string}}) 
 
         const activeBorrow=await prisma.item_transaction.findFirst({
             where: {
-                itemId: params.id,
+                itemId: id,
                 isAvailable: false
             }
         });
@@ -162,7 +165,7 @@ export async function DELETE(req: NextRequest, {params}: {params: {id:string}}) 
         }
 
         await prisma.items.delete({
-            where: {id:params.id} 
+            where: {id} 
         });
         return NextResponse.json({message: "Item deleted"},{status : 200});
 

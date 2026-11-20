@@ -6,9 +6,10 @@ const prisma = new PrismaClient();
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id: transactionId } = await context.params;
     const tokenUser = await getUserFromToken(req);
     if (!tokenUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -25,9 +26,7 @@ export async function PUT(
       return NextResponse.json({ message: "Forbidden: Librarian access required" }, { status: 403 });
     }
 
-    const { id: transactionId } = params;
 
-    
     const returnedTransaction = await prisma.$transaction(async (tx) => {
       
       const transactionToReturn = await tx.item_transaction.findUnique({
